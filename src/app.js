@@ -3,6 +3,7 @@ import cors from 'cors';
 import singUp from './controllers/signUp/signUp.js';
 import signIn from './controllers/signIn/signIn.js';
 import { adressPost, adressGet } from './controllers/adress/adress.js';
+import { planPost, planGet } from './controllers/plan/plan.js';
 
 const app = express();
 app.use(cors());
@@ -18,5 +19,8 @@ app.post('/sign-in', signIn);
 
 app.post('/adress', adressPost);
 app.get('/adress', adressGet);
+
+app.post('/plan', planPost);
+app.get('/plan', planGet);
 
 export default app;
