@@ -8,7 +8,7 @@ export default async function deliveryFactory(delivery) {
       delivery_id = delivery_date.rows[0].id;
     }
   } catch (erro) {
-    console.log(erro);
+    // console.log(erro);
   }
   return delivery_id;
 }

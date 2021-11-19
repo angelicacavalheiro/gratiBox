@@ -8,7 +8,7 @@ export default async function productsFactory(product) {
       products_id = products.rows[0].id;
     }
   } catch (erro) {
-    console.log(erro);
+    // console.log(erro);
   }
   return products_id;
 }
