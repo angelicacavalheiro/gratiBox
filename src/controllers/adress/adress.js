@@ -60,8 +60,31 @@ async function adressPost(req, res) {
 }
 
 async function adressGet(req, res) {
+  const {
+    token,
+  } = req.body;
+    if (!token) return res.sendStatus(401);
+    const findToken = await connection.query(`
+    SELECT "user_id" FROM "session" WHERE "token" = ($1);
+    `, [token]);
+
+    if (findToken.rowCount === 0) {
+      return res.status(401).send('Você não está logado');
+    }
+
+    const { user_id } = findToken.rows[0];
     try {
-      const adresses = await connection.query('SELECT * FROM adress');
+      const adresses = await connection.query(
+`
+      SELECT adress.id, adress.street, adress.number, state.state_name, city.city_name, cep.code
+      FROM adress
+        JOIN state ON adress.state_id = state.id
+        JOIN city ON adress.city_id = city.id
+        JOIN cep ON adress.cep_id = cep.id
+      WHERE adress.user_id = $1;
+      `,
+      [user_id],
+      );
       return res.send(adresses.rows);
     } catch (error) {
       return res.sendStatus(500);
