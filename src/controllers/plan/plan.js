@@ -35,7 +35,12 @@ async function planPost(req, res) {
     SELECT "user_id" FROM "plan" WHERE "user_id" = ($1);
     `, [user_id]);
 
-    const date = new Date();
+    const option = {
+      month: 'numeric',
+      day: 'numeric',
+      year: 'numeric',
+    };
+    const date = new Date().toLocaleDateString('pt-br', option);
 
     if (findAdress.rowCount === 0) {
       // insert na tabela plano
