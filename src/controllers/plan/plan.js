@@ -39,7 +39,7 @@ async function planPost(req, res) {
       // insert na tabela plano
       await connection.query(`
       INSERT INTO plan (type_plan_id, delivery_id, products_id, user_id)
-      VALUES ($1, $2, $3, $4) 
+      VALUES ($1, $2, $3, $4)
       RETURNING *
       `, [plan_type_id, delivery_id, products_id, user_id]);
       return res.sendStatus(200);
@@ -53,14 +53,14 @@ async function planPost(req, res) {
       `, [plan_type_id, delivery_id, products_id, user_id]);
     return res.sendStatus(200);
   } catch (erro) {
-    return res.sendStatus(500);
+    return res.status(500).send(erro);
   }
 }
 
 async function planGet(req, res) {
-  const {
-    token,
-  } = req.body;
+  const { authorization } = req.headers;
+  const token = authorization?.replace('Bearer ', '');
+
   try {
     if (!token) return res.sendStatus(401);
     const findToken = await connection.query(`
@@ -78,7 +78,7 @@ async function planGet(req, res) {
         FROM plan
           JOIN plan_type ON plan.type_plan_id = plan_type.id
           JOIN delivery ON plan.delivery_id = delivery.id
-          JOIN products ON plan.products_id = products.id      
+          JOIN products ON plan.products_id = products.id
         WHERE plan.user_id = $1;
       `,
       [user_id],
