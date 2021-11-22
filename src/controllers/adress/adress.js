@@ -41,7 +41,7 @@ async function adressPost(req, res) {
       // insert na tabela adress
       await connection.query(`
       INSERT INTO adress (street, number, state_id, city_id, cep_id, user_id)
-      VALUES ($1, $2, $3, $4, $5, $6) 
+      VALUES ($1, $2, $3, $4, $5, $6)
       RETURNING *
       `, [street, number, state_id, city_id, cep_id, user_id]);
       return res.sendStatus(200);
